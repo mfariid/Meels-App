@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CategoryMeelsScreen extends StatelessWidget {
+  static final routeName = 'CategoryMeelsScreen';
+
   // final String categoryId;
   // final String categoryTitle;
 

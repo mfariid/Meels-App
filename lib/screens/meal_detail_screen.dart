@@ -1,11 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-detail';
+
+  final Function toggleFavorite;
+  final Function isFavorite;
+
+  MealDetailScreen(this.toggleFavorite, this.isFavorite);
 
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -26,7 +29,7 @@ class MealDetailScreen extends StatelessWidget {
       ),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
-      height: 200,
+      height: 150,
       width: 300,
       child: child,
     );
@@ -36,7 +39,6 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context).settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
@@ -58,12 +60,11 @@ class MealDetailScreen extends StatelessWidget {
                 itemBuilder: (ctx, index) => Card(
                   color: Theme.of(context).accentColor,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 10,
-                    ),
-                    child: Text(selectedMeal.ingredients[index]),
-                  ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 10,
+                      ),
+                      child: Text(selectedMeal.ingredients[index])),
                 ),
                 itemCount: selectedMeal.ingredients.length,
               ),
@@ -81,7 +82,7 @@ class MealDetailScreen extends StatelessWidget {
                         selectedMeal.steps[index],
                       ),
                     ),
-                    Divider(),
+                    Divider()
                   ],
                 ),
                 itemCount: selectedMeal.steps.length,
@@ -92,11 +93,9 @@ class MealDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.delete,
+          isFavorite(mealId) ? Icons.star : Icons.star_border,
         ),
-        onPressed: () {
-          Navigator.of(context).pop(mealId);
-        },
+        onPressed: () => toggleFavorite(mealId),
       ),
     );
   }
